@@ -8,6 +8,8 @@ Activer automatiquement les systèmes de ventilation et déshumidification
 Visualiser les données sur un dashboard web interactif
 Recevoir des alertes visuelles selon l'état du système
 Contrôler les actionneurs à distance via Node-RED
+
+
 Démonstration:
 https://wokwi.com/projects/452156716409151489
 http://localhost:1880/ui/#!/0?socketid=ZXSYrSgTpy_WUUbUAAAl
@@ -72,6 +74,8 @@ npm install node-red-dashboard
 
 # Lancer Node-RED
 node-red
+
+
 3. Importer le flow Node-RED
 
 Accédez à Node-RED : http://localhost:1880
