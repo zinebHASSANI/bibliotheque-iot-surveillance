@@ -1,4 +1,8 @@
 # bibliotheque-iot-surveillance
+<img width="945" height="635" alt="Image" src="https://github.com/user-attachments/assets/31ff62f5-9f48-4cc9-a89d-26d3bd3aef7f" />
+<img width="945" height="342" alt="image" src="https://github.com/user-attachments/assets/86b1d2ce-23b0-4f12-b581-7457ce676c5b" />
+
+
 Système IoT intelligent de surveillance pour bibliothèque avec ESP32, MQTT et Node-RED
 Système complet de surveillance et contrôle automatique pour la préservation des livres et documents dans une bibliothèque ou salle d'archives.
 Ce projet IoT permet de :
@@ -14,6 +18,9 @@ Démonstration:
 https://wokwi.com/projects/452156716409151489
 http://localhost:1880/ui/#!/0?socketid=ZXSYrSgTpy_WUUbUAAAl
 http://127.0.0.1:1880/#flow/750026b40a2d664f
+
+
+
 Schéma de connexion
 DHT22 (Capteur)
 
