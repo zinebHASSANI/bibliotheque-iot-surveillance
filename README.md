@@ -53,7 +53,7 @@ Température
  NORMAL : < 25°C 
  AVERTISSEMENT : 25°C - 27.9°C
  CRITIQUE: ≥ 28°C
- Humidité
+Humidité
  NORMAL : < 65%
  AVERTISSEMENT : 65% - 69.9%
  CRITIQUE: ≥ 70%
