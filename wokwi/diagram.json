@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "author": "Zineb - Bibliothèque IoT v2.0",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 23.9, "left": 4.6, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht",
+      "top": -95.7,
+      "left": 157.8,
+      "attrs": { "temperature": "2.3", "humidity": "31" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_rouge",
+      "top": 82.8,
+      "left": -197.8,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_jaune",
+      "top": 140.4,
+      "left": -188.2,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_verte",
+      "top": 236.4,
+      "left": -169,
+      "attrs": { "color": "green" }
+    },
+    { "type": "wokwi-servo", "id": "servo_ventilateur", "top": 50, "left": 280, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relay", "top": 200, "left": 250, "attrs": {} },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 61.55,
+      "left": -86.4,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 128.75,
+      "left": -96,
+      "attrs": { "value": "220" }
+    },
+    { "type": "wokwi-resistor", "id": "r3", "top": 170, "left": -60, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "dht:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "dht:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "dht:SDA", "esp:D15", "green", [ "v0" ] ],
+    [ "led_rouge:A", "r1:1", "red", [ "v0" ] ],
+    [ "r1:2", "esp:D2", "red", [ "v0" ] ],
+    [ "led_rouge:C", "esp:GND.2", "black", [ "v0" ] ],
+    [ "led_jaune:A", "r2:1", "yellow", [ "v0" ] ],
+    [ "r2:2", "esp:D22", "yellow", [ "v0" ] ],
+    [ "led_jaune:C", "esp:GND.2", "black", [ "v0" ] ],
+    [ "led_verte:A", "r3:1", "green", [ "v0" ] ],
+    [ "r3:2", "esp:D23", "green", [ "v0" ] ],
+    [ "led_verte:C", "esp:GND.2", "black", [ "v0" ] ],
+    [ "servo_ventilateur:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "servo_ventilateur:V+", "esp:VIN", "red", [ "v0" ] ],
+    [ "servo_ventilateur:SIG", "esp:D4", "orange", [ "v0" ] ],
+    [ "relay:VCC", "esp:VIN", "red", [ "v0" ] ],
+    [ "relay:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "relay:IN", "esp:D5", "blue", [ "v0" ] ],
+    [ "servo_ventilateur:PWM", "esp:D4", "green", [ "h0" ] ]
+  ],
+  "dependencies": {}
+}

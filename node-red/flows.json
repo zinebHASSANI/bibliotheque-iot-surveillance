@@ -1,0 +1,737 @@
+[
+    {
+        "id": "488166910467e566",
+        "type": "tab",
+        "label": "🏛️ Surveillance Bibliothèque IoT v2.0",
+        "disabled": false,
+        "info": "Système complet de surveillance avec actionneurs, export CSV"
+    },
+    {
+        "id": "4af8123ea5fa3ff8",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "Température MQTT",
+        "topic": "bibliotheque/zineb/temperature",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "b11859b864883d57"
+            ]
+        ]
+    },
+    {
+        "id": "5d5b75850855cc06",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "Humidité MQTT",
+        "topic": "bibliotheque/zineb/humidite",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "0f2bfae40cd042a8"
+            ]
+        ]
+    },
+    {
+        "id": "c8645778cec3b3d4",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "Status MQTT",
+        "topic": "bibliotheque/zineb/status",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "c0a408546588bba5"
+            ]
+        ]
+    },
+    {
+        "id": "5774ecf3c5b62c39",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "Alertes MQTT",
+        "topic": "bibliotheque/zineb/alerte",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 340,
+        "wires": [
+            [
+                "b6999f9203ee4a92"
+            ]
+        ]
+    },
+    {
+        "id": "3657a606a7bb92f3",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "Compteur MQTT",
+        "topic": "bibliotheque/zineb/compteur",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 420,
+        "wires": [
+            [
+                "ca96aef36daaf23f"
+            ]
+        ]
+    },
+    {
+        "id": "6c16889dd0ef5169",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "État Ventilateur",
+        "topic": "bibliotheque/zineb/ventilateur",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "164c8bbf49a803b1"
+            ]
+        ]
+    },
+    {
+        "id": "965d48ac70d83a05",
+        "type": "mqtt in",
+        "z": "488166910467e566",
+        "name": "État Déshumidificateur",
+        "topic": "bibliotheque/zineb/deshumidificateur",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 580,
+        "wires": [
+            [
+                "9b0ce479ac8a8655"
+            ]
+        ]
+    },
+    {
+        "id": "b11859b864883d57",
+        "type": "function",
+        "z": "488166910467e566",
+        "name": "Parser Température",
+        "func": "var temp = parseFloat(msg.payload);\nmsg.payload = temp;\n\n// Stocker dans le contexte global pour CSV\nvar data = global.get('sensor_data') || [];\ndata.push({\n    timestamp: new Date().toISOString(),\n    temperature: temp,\n    humidite: null,\n    status: null\n});\nif (data.length > 1000) data.shift();\nglobal.set('sensor_data', data);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "e560898dee7112e8",
+                "1cb68b2754ca2506",
+                "b3ba1aa736dbddac"
+            ]
+        ]
+    },
+    {
+        "id": "0f2bfae40cd042a8",
+        "type": "function",
+        "z": "488166910467e566",
+        "name": "Parser Humidité",
+        "func": "var hum = parseFloat(msg.payload);\nmsg.payload = hum;\n\n// Stocker dans le contexte global\nvar data = global.get('sensor_data') || [];\nif (data.length > 0) {\n    data[data.length - 1].humidite = hum;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 180,
+        "wires": [
+            [
+                "e8e8bbb9e233b7aa",
+                "9e98993465eced7d",
+                "7461186212c306fb"
+            ]
+        ]
+    },
+    {
+        "id": "ca96aef36daaf23f",
+        "type": "function",
+        "z": "488166910467e566",
+        "name": "Parser Compteurs",
+        "func": "var parts = msg.payload.split(',');\nvar compteurTemp = parseInt(parts[0]) || 0;\nvar compteurHum = parseInt(parts[1]) || 0;\nvar compteurCrit = parseInt(parts[2]) || 0;\n\n// Envoyer aux compteurs\nreturn [\n    {payload: compteurTemp},\n    {payload: compteurHum},\n    {payload: compteurCrit}\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 420,
+        "wires": [
+            [
+                "bca9e5943c315c3f"
+            ],
+            [
+                "27a77dc9ab17b5fb"
+            ],
+            [
+                "ede3d8bba78822a5"
+            ]
+        ]
+    },
+    {
+        "id": "e560898dee7112e8",
+        "type": "ui_gauge",
+        "z": "488166910467e566",
+        "name": "Jauge Température",
+        "group": "group_capteurs",
+        "order": 1,
+        "width": "6",
+        "height": "5",
+        "gtype": "gage",
+        "title": "🌡️ Température",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "24.9",
+        "seg2": "27.9",
+        "x": 600,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "e8e8bbb9e233b7aa",
+        "type": "ui_gauge",
+        "z": "488166910467e566",
+        "name": "Jauge Humidité",
+        "group": "group_capteurs",
+        "order": 2,
+        "width": "6",
+        "height": "5",
+        "gtype": "gage",
+        "title": "💧 Humidité",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "64.9",
+        "seg2": "69.9",
+        "x": 590,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1cb68b2754ca2506",
+        "type": "ui_chart",
+        "z": "488166910467e566",
+        "name": "Graphique Température",
+        "group": "group_graphiques",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "label": "📈 Température (°C)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "En attente de données...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "40",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#d62728",
+            "#9467bd",
+            "#8c564b",
+            "#e377c2",
+            "#7f7f7f",
+            "#bcbd22"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 620,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9e98993465eced7d",
+        "type": "ui_chart",
+        "z": "488166910467e566",
+        "name": "Graphique Humidité",
+        "group": "group_graphiques",
+        "order": 2,
+        "width": "12",
+        "height": "6",
+        "label": "📊 Humidité (%)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "En attente de données...",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#3498db",
+            "#ff7f0e",
+            "#2ca02c",
+            "#d62728",
+            "#9467bd",
+            "#8c564b",
+            "#e377c2",
+            "#7f7f7f",
+            "#bcbd22"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 610,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0a408546588bba5",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "3e49173ad6eda424",
+        "order": 1,
+        "width": "12",
+        "height": "2",
+        "name": "État Système",
+        "label": "📍 État du Système",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 360,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "b6999f9203ee4a92",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "3e49173ad6eda424",
+        "order": 2,
+        "width": "12",
+        "height": "2",
+        "name": "Message Alerte",
+        "label": "🔔 Dernière Alerte",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 360,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "bca9e5943c315c3f",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "5f4abf6c5dea0a15",
+        "order": 1,
+        "width": "4",
+        "height": "3",
+        "name": "Compteur Temp",
+        "label": "🌡️ Alertes Température",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 600,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "27a77dc9ab17b5fb",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "5f4abf6c5dea0a15",
+        "order": 2,
+        "width": "4",
+        "height": "3",
+        "name": "Compteur Hum",
+        "label": "💧 Alertes Humidité",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 600,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ede3d8bba78822a5",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "5f4abf6c5dea0a15",
+        "order": 3,
+        "width": "4",
+        "height": "3",
+        "name": "Compteur Critique",
+        "label": "🚨 Alertes Critiques",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 610,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "164c8bbf49a803b1",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "a10efd1d822a14af",
+        "order": 1,
+        "width": "6",
+        "height": "2",
+        "name": "État Ventilateur",
+        "label": "🌀 Ventilateur",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 400,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "9b0ce479ac8a8655",
+        "type": "ui_text",
+        "z": "488166910467e566",
+        "group": "a10efd1d822a14af",
+        "order": 2,
+        "width": "6",
+        "height": "2",
+        "name": "État Déshumidificateur",
+        "label": "💧 Déshumidificateur",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 420,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6638413b947240a7",
+        "type": "ui_button",
+        "z": "488166910467e566",
+        "name": "Ventilateur ON",
+        "group": "aeaba0de61d33168",
+        "order": 1,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "🌀 ON",
+        "tooltip": "Activer le ventilateur",
+        "color": "",
+        "bgcolor": "#4CAF50",
+        "icon": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "topic": "bibliotheque/zineb/cmd/ventilateur",
+        "topicType": "str",
+        "x": 160,
+        "y": 680,
+        "wires": [
+            [
+                "8bfd57c7b0a212d4"
+            ]
+        ]
+    },
+    {
+        "id": "660899adc2caaa9a",
+        "type": "ui_button",
+        "z": "488166910467e566",
+        "name": "Ventilateur OFF",
+        "group": "aeaba0de61d33168",
+        "order": 2,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "🌀 OFF",
+        "tooltip": "Désactiver le ventilateur",
+        "color": "",
+        "bgcolor": "#f44336",
+        "icon": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "topic": "bibliotheque/zineb/cmd/ventilateur",
+        "topicType": "str",
+        "x": 160,
+        "y": 720,
+        "wires": [
+            [
+                "8bfd57c7b0a212d4"
+            ]
+        ]
+    },
+    {
+        "id": "3618d37b9646ac01",
+        "type": "ui_button",
+        "z": "488166910467e566",
+        "name": "Déshumidificateur ON",
+        "group": "aeaba0de61d33168",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "💧 ON",
+        "tooltip": "Activer le déshumidificateur",
+        "color": "",
+        "bgcolor": "#2196F3",
+        "icon": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "topic": "bibliotheque/zineb/cmd/deshumidificateur",
+        "topicType": "str",
+        "x": 180,
+        "y": 760,
+        "wires": [
+            [
+                "8bfd57c7b0a212d4"
+            ]
+        ]
+    },
+    {
+        "id": "2c3453fe6f4f956e",
+        "type": "ui_button",
+        "z": "488166910467e566",
+        "name": "Déshumidificateur OFF",
+        "group": "aeaba0de61d33168",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "label": "💧 OFF",
+        "tooltip": "Désactiver le déshumidificateur",
+        "color": "",
+        "bgcolor": "#f44336",
+        "icon": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "topic": "bibliotheque/zineb/cmd/deshumidificateur",
+        "topicType": "str",
+        "x": 180,
+        "y": 800,
+        "wires": [
+            [
+                "8bfd57c7b0a212d4"
+            ]
+        ]
+    },
+    {
+        "id": "8bfd57c7b0a212d4",
+        "type": "mqtt out",
+        "z": "488166910467e566",
+        "name": "Publication Commandes",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 420,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "b3ba1aa736dbddac",
+        "type": "debug",
+        "z": "488166910467e566",
+        "name": "Debug Temp",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "7461186212c306fb",
+        "type": "debug",
+        "z": "488166910467e566",
+        "name": "Debug Hum",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "group_capteurs",
+        "type": "ui_group",
+        "name": "Capteurs en temps réel",
+        "tab": "tab_dashboard",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "group_graphiques",
+        "type": "ui_group",
+        "name": "Historique",
+        "tab": "tab_dashboard",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "3e49173ad6eda424",
+        "type": "ui_group",
+        "name": "📍 État du Système",
+        "tab": "tab_dashboard",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "5f4abf6c5dea0a15",
+        "type": "ui_group",
+        "name": "📈 Compteurs d'Alertes",
+        "tab": "tab_dashboard",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "a10efd1d822a14af",
+        "type": "ui_group",
+        "name": "⚙️ État des Actionneurs",
+        "tab": "tab_dashboard",
+        "order": 5,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "aeaba0de61d33168",
+        "type": "ui_group",
+        "name": "🎮 Contrôle Manuel",
+        "tab": "tab_dashboard",
+        "order": 6,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "tab_dashboard",
+        "type": "ui_tab",
+        "name": "Bibliothèque IoT",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "665ff803e39fe6fd",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
